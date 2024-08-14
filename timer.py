@@ -1,6 +1,8 @@
 import flet as ft
 import asyncio
 
+from audio import Sounds
+
 
 class Pomodoro:
     """ Class that creates a Pomodoro timer """
@@ -12,6 +14,9 @@ class Pomodoro:
         self.rest_seconds = rest_seconds
         self.cur_rest_seconds = self.rest_seconds
         self.timer_state = "STOP"
+        self.sessions_count = 0
+
+        self.sounds = Sounds(self.page).get_sounds()
 
         session_clock = ft.TimePicker(
             value="00:25",
@@ -147,8 +152,8 @@ class Pomodoro:
         self.rest_time_button.update()
         self.reset_button.update()
 
-        self.session_seconds = 5
-        self.rest_seconds = 2
+        self.session_seconds = 10
+        self.rest_seconds = 10
 
         self.cur_session_seconds = self.session_seconds
         self.cur_rest_seconds = self.rest_seconds
@@ -160,6 +165,8 @@ class Pomodoro:
         """ Resets session if it's starts """
 
         self.timer_state = "STOP"
+        self.sounds["session_end"].play()
+        self.sessions_count = 0
 
         hours, minutes  = divmod(self.session_seconds, 60)
         hours_str, minutes_str = str(hours) if hours >= 10 else "0" + str(hours), str(minutes) if minutes >= 10 else "0" + str(minutes)
@@ -186,6 +193,7 @@ class Pomodoro:
         """ Controls work and rest sessions """
 
         self.page.window.to_front()
+        self.sounds["session_start"].play()
         self.cur_rest_seconds = self.rest_seconds
 
         hours, minutes  = divmod(self.cur_rest_seconds, 60)
@@ -207,6 +215,10 @@ class Pomodoro:
                 self.timer_state = "REST"
         
         self.page.window.to_front()
+        if self.timer_state == "REST":
+            self.sounds["session_end"].play()
+            self.sessions_count += 1
+            print(self.sessions_count)
         self.cur_session_seconds = self.session_seconds
 
         hours, minutes  = divmod(self.cur_session_seconds, 60)
