@@ -16,7 +16,9 @@ class Pomodoro:
         self.timer_state = "STOP"
         self.sessions_count = 0
 
-        self.sounds = Sounds(self.page).get_sounds()
+        self.sound_settings = Sounds(self.page, True)
+        self.sounds = self.sound_settings.get_sounds()
+        self.sound_button = self.sound_settings.sound_button
 
         session_clock = ft.TimePicker(
             value="00:25",
@@ -124,7 +126,7 @@ class Pomodoro:
             alignment=ft.alignment.center)
 
 
-    def set_session_time(self, e):
+    def set_session_time(self, e) -> None:
         """ Sets session time """
 
         hours, minutes = map(int, e.data.split(":"))
@@ -136,7 +138,7 @@ class Pomodoro:
         self.session_time_button.update()
     
 
-    def set_rest_time(self, e):
+    def set_rest_time(self, e) -> None:
         """ Sets rest time """
 
         hours, minutes = map(int, e.data.split(":"))
@@ -148,7 +150,7 @@ class Pomodoro:
         self.rest_time_button.update()
 
 
-    def start_session(self):
+    def start_session(self) -> None:
         """ Start session """
 
         self.timer_state = "SESSION"
@@ -174,7 +176,7 @@ class Pomodoro:
         self.page.run_task(self.start_time)
 
 
-    def reset_session(self):
+    def reset_session(self) -> None:
         """ Resets session if it's starts """
 
         self.timer_state = "STOP"
@@ -206,7 +208,7 @@ class Pomodoro:
         self.page.update()
     
 
-    async def start_time(self):
+    async def start_time(self) -> None:
         """ Controls work and rest sessions """
 
         self.page.window.to_front()
