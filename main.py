@@ -44,9 +44,10 @@ def main(page: ft.Page):
 
     pomodoro_timer = Pomodoro(page)
     time_controls = pomodoro_timer.time_controls
+    counter = pomodoro_timer.session_counter_container
     buttons = pomodoro_timer.buttons
     
-    page.add(title, pomodoro_img_container, time_controls, buttons)
+    page.add(title, pomodoro_img_container, time_controls, counter, buttons)
 
 
 if __name__ == "__main__":

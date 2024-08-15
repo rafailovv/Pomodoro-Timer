@@ -66,6 +66,17 @@ class Pomodoro:
                 vertical_alignment=ft.MainAxisAlignment.CENTER),
             alignment=ft.alignment.center)
         
+        self.session_counter_container = ft.Container(
+            ft.Text(
+                value=f"Session count: {str(self.sessions_count)}",
+                color="#000000",
+                size=16,
+                weight=ft.FontWeight.BOLD,
+                text_align=ft.TextAlign.CENTER,
+                font_family="Nixie One",
+                visible=False),
+            alignment=ft.alignment.center)
+        
         self.start_button = ft.OutlinedButton(
             width=120,
             height=35,
@@ -142,12 +153,14 @@ class Pomodoro:
 
         self.timer_state = "SESSION"
 
+        self.session_counter_container.content.visible = True
         self.start_button.disabled = True
         self.session_time_button.disabled = True
         self.rest_time_button.disabled = True
         self.reset_button.disabled = False
 
         self.start_button.update()
+        self.session_counter_container.update()
         self.session_time_button.update()
         self.rest_time_button.update()
         self.reset_button.update()
@@ -167,6 +180,8 @@ class Pomodoro:
         self.timer_state = "STOP"
         self.sounds["session_end"].play()
         self.sessions_count = 0
+        self.session_counter_container.content.value = f"Session count: {self.sessions_count}"
+        self.session_counter_container.update()
 
         hours, minutes  = divmod(self.session_seconds, 60)
         hours_str, minutes_str = str(hours) if hours >= 10 else "0" + str(hours), str(minutes) if minutes >= 10 else "0" + str(minutes)
@@ -177,11 +192,13 @@ class Pomodoro:
         self.rest_time_button.content.value = f"{hours_str}:{minutes_str}"
 
         self.start_button.disabled = False
+        self.session_counter_container.content.visible = False
         self.session_time_button.disabled = False
         self.rest_time_button.disabled = False
         self.reset_button.disabled = True
 
         self.start_button.update()
+        self.session_counter_container.update()
         self.session_time_button.update()
         self.rest_time_button.update()
         self.reset_button.update()
@@ -217,8 +234,11 @@ class Pomodoro:
         self.page.window.to_front()
         if self.timer_state == "REST":
             self.sounds["session_end"].play()
+
             self.sessions_count += 1
-            print(self.sessions_count)
+            self.session_counter_container.content.value = f"Session count: {self.sessions_count}"
+            self.session_counter_container.update()
+            
         self.cur_session_seconds = self.session_seconds
 
         hours, minutes  = divmod(self.cur_session_seconds, 60)
