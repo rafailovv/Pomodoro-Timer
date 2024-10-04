@@ -23,8 +23,7 @@ def main(page: ft.Page) -> None:
 
     title = ft.SafeArea(
         ft.Text(
-                "Pomodoro Timer!",
-                # width=page.width,
+                page.title,
                 color="#000000",
                 size=30,
                 text_align=ft.TextAlign.CENTER,

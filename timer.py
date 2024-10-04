@@ -43,6 +43,8 @@ class Pomodoro:
         rest_clock = ft.TimePicker(
             value="00:05",
             time_picker_entry_mode=ft.TimePickerEntryMode.INPUT_ONLY,
+            hour_label_text="Minutes",
+            minute_label_text="Seconds",
             on_change=self.set_rest_time)
 
         self.rest_time_button = ft.TextButton(
@@ -141,12 +143,12 @@ class Pomodoro:
     def set_rest_time(self, e) -> None:
         """ Sets rest time """
 
-        hours, minutes = map(int, e.data.split(":"))
-        hours_str, minutes_str = str(hours) if hours >= 10 else "0" + str(hours), str(minutes) if minutes >= 10 else "0" + str(minutes)
+        minutes, seconds = map(int, e.data.split(":"))
+        minutes_str, seconds_str = str(minutes) if minutes >= 10 else "0" + str(minutes), str(seconds) if seconds >= 10 else "0" + str(seconds)
 
-        self.rest_seconds = hours * 3600 + minutes * 60
+        self.rest_seconds = minutes * 60 + seconds
         self.cur_rest_seconds = self.rest_seconds
-        self.rest_time_button.content.value = f"{hours_str}:{minutes_str}"
+        self.rest_time_button.content.value = f"{minutes_str}:{seconds_str}"
         self.rest_time_button.update()
 
 
@@ -166,9 +168,10 @@ class Pomodoro:
         self.session_time_button.update()
         self.rest_time_button.update()
         self.reset_button.update()
-
-        self.session_seconds = 10
-        self.rest_seconds = 10
+        
+        # FOR TEST
+        # self.session_seconds = 10
+        # self.rest_seconds = 10
 
         self.cur_session_seconds = self.session_seconds
         self.cur_rest_seconds = self.rest_seconds
@@ -189,9 +192,9 @@ class Pomodoro:
         hours_str, minutes_str = str(hours) if hours >= 10 else "0" + str(hours), str(minutes) if minutes >= 10 else "0" + str(minutes)
         self.session_time_button.content.value = f"{hours_str}:{minutes_str}"
         
-        hours, minutes  = divmod(self.rest_seconds, 60)
-        hours_str, minutes_str = str(hours) if hours >= 10 else "0" + str(hours), str(minutes) if minutes >= 10 else "0" + str(minutes)
-        self.rest_time_button.content.value = f"{hours_str}:{minutes_str}"
+        minutes, seconds  = divmod(self.rest_seconds, 60)
+        minutes_str, seconds_str = str(minutes) if minutes >= 10 else "0" + str(minutes), str(seconds) if seconds >= 10 else "0" + str(seconds)
+        self.rest_time_button.content.value = f"{minutes_str}:{seconds_str}"
 
         self.start_button.disabled = False
         self.session_counter_container.content.visible = False
@@ -215,10 +218,10 @@ class Pomodoro:
         self.sounds["session_start"].play()
         self.cur_rest_seconds = self.rest_seconds
 
-        hours, minutes  = divmod(self.cur_rest_seconds, 60)
-        hours_str, minutes_str = str(hours) if hours >= 10 else "0" + str(hours), str(minutes) if minutes >= 10 else "0" + str(minutes)
+        minutes, seconds  = divmod(self.cur_rest_seconds, 60)
+        minutes_str, seconds_str = str(minutes) if minutes >= 10 else "0" + str(minutes), str(seconds) if seconds >= 10 else "0" + str(seconds)
 
-        self.rest_time_button.content.value = f"{hours_str}:{minutes_str}"
+        self.rest_time_button.content.value = f"{minutes_str}:{seconds_str}"
         self.rest_time_button.update()
 
         while self.timer_state == "SESSION" and self.cur_session_seconds >= 0:
@@ -250,10 +253,10 @@ class Pomodoro:
         self.session_time_button.update()
 
         while self.timer_state == "REST" and self.cur_rest_seconds >= 0:
-            hours, minutes  = divmod(self.cur_rest_seconds, 60)
-            hours_str, minutes_str = str(hours) if hours >= 10 else "0" + str(hours), str(minutes) if minutes >= 10 else "0" + str(minutes)
+            minutes, seconds  = divmod(self.cur_rest_seconds, 60)
+            minutes_str, seconds_str = str(minutes) if minutes >= 10 else "0" + str(minutes), str(seconds) if seconds >= 10 else "0" + str(seconds)
 
-            self.rest_time_button.content.value = f"{hours_str}:{minutes_str}"
+            self.rest_time_button.content.value = f"{minutes_str}:{seconds_str}"
             self.rest_time_button.update()
 
             await asyncio.sleep(1)
