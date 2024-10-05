@@ -1,5 +1,5 @@
 # Pomodoro-Timer
-It's simple Pomodoro Time that you can use on your desktop.
+It's simple Pomodoro Timer that you can use on your desktop.
 
 # Installation
 Clone repository:
@@ -18,6 +18,12 @@ flet build
 Or
 ```
 flet pack main.py --add-data "assets;assets" --icon ./assets/favicon.png
+```
+
+# Usage
+After building app, you can find .exe file in
+```
+/REPOSITORY_FOLDER/dist/main.exe
 ```
 
 # Contacts
