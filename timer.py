@@ -169,9 +169,9 @@ class Pomodoro:
         self.rest_time_button.update()
         self.reset_button.update()
         
-        # FOR TEST
-        # self.session_seconds = 10
-        # self.rest_seconds = 10
+        # TEST
+        # self.session_seconds = 5
+        # self.rest_seconds = 2
 
         self.cur_session_seconds = self.session_seconds
         self.cur_rest_seconds = self.rest_seconds
@@ -216,7 +216,7 @@ class Pomodoro:
 
         self.page.window.to_front()
         self.sounds["session_start"].play()
-        self.cur_rest_seconds = self.rest_seconds
+        self.cur_rest_seconds = self.rest_seconds if (self.sessions_count + 1) % 2 != 0 or self.sessions_count == 0 else self.rest_seconds * 4
 
         minutes, seconds  = divmod(self.cur_rest_seconds, 60)
         minutes_str, seconds_str = str(minutes) if minutes >= 10 else "0" + str(minutes), str(seconds) if seconds >= 10 else "0" + str(seconds)
